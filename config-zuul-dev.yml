@@ -1,0 +1,73 @@
+spring:
+  zipkin:
+    rabbitmq:
+          queue: zipkin
+    sender:
+          type: rabbit
+    locator:
+          discovery:
+              enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0 #样本采集量，默认为0.1，为了测试这里修改为1，正式环境一般使用默认值。
+  #文件上传
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  rabbitmq:
+    host: 10.45.148.235
+    port: 5672
+    username: zxm10
+    password: zxm10
+
+server:
+  port: 8000
+
+
+#admin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+#eureka
+eureka:
+  instance:
+      leaseRenewalIntervalInSeconds: 10
+      health-check-url-path: /actuator/health
+  client:
+      registryFetchIntervalSeconds: 5
+      service-url:
+        defaultZone: http://localhost:9100/eureka/
+#网关拦截
+zuul:
+  host:
+    max-per-route-connections: 50
+  routes:
+    gateway:
+      path: /api/fegin/**
+      service-id: config-fegin
+    #传统的路由配置,此名称可以自定义
+    api-a:
+      #映射的url
+      path: /api-a/**
+      service-id: fegin-person
+    api-b:
+      path: /api-b/**
+      service-id: config-fegin 
+    api-w:
+      path: /api-w/**
+      service-id: bap-wechat
+    api-person:
+       path: /v1/bap/person/**
+       service-id: fegin-person
+
+
+
+ 
+
