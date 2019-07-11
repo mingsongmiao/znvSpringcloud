@@ -1,0 +1,40 @@
+spring:
+  zipkin:
+    rabbitmq:
+          queue: zipkin
+    sender:
+          type: rabbit
+    locator:
+          discovery:
+              enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0 #样本采集量，默认为0.1，为了测试这里修改为1，正式环境一般使用默认值。
+  rabbitmq:
+    host: 10.45.148.235
+    port: 5672
+    username: zxm10
+    password: zxm10
+server:
+  port: 8200
+
+nickName: this is client word
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+eureka:
+  instance:
+      leaseRenewalIntervalInSeconds: 10
+      health-check-url-path: /actuator/health
+  client:
+      registryFetchIntervalSeconds: 5
+      service-url:
+        defaultZone: http://localhost:9100/eureka/
